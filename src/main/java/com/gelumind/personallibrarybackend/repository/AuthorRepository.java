@@ -1,4 +1,4 @@
-package com.gelumind.personallibrarybackend.dao;
+package com.gelumind.personallibrarybackend.repository;
 
 import com.gelumind.personallibrarybackend.model.Author;
 import org.springframework.data.repository.CrudRepository;

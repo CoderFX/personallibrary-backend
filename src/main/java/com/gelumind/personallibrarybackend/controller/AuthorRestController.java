@@ -1,7 +1,7 @@
 package com.gelumind.personallibrarybackend.controller;
 
 import com.gelumind.personallibrarybackend.model.Author;
-import com.gelumind.personallibrarybackend.services.AuthorService;
+import com.gelumind.personallibrarybackend.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

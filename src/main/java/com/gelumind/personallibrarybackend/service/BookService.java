@@ -1,12 +1,11 @@
-package com.gelumind.personallibrarybackend.services;
+package com.gelumind.personallibrarybackend.service;
 
-import com.gelumind.personallibrarybackend.dao.AuthorRepository;
-import com.gelumind.personallibrarybackend.dao.BookRepository;
+import com.gelumind.personallibrarybackend.repository.AuthorRepository;
+import com.gelumind.personallibrarybackend.repository.BookRepository;
 import com.gelumind.personallibrarybackend.model.Author;
 import com.gelumind.personallibrarybackend.model.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

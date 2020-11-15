@@ -1,6 +1,6 @@
-package com.gelumind.personallibrarybackend.services;
+package com.gelumind.personallibrarybackend.service;
 
-import com.gelumind.personallibrarybackend.dao.AuthorRepository;
+import com.gelumind.personallibrarybackend.repository.AuthorRepository;
 import com.gelumind.personallibrarybackend.model.Author;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
