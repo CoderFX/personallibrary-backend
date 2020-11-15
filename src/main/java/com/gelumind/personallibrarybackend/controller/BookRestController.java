@@ -43,9 +43,9 @@ public class BookRestController extends ApiRestController {
 
     // Add book
     @PostMapping("/book/add")
-    public void addBook(@RequestBody Book book, Author author) {
+    public void addBook(@RequestBody Book book) {
         bookService.addBook(book);
-        bookService.addAuthor(book.getBook_id(), author.getAuthor_id());
+//        bookService.addAuthor(book.getBook_id(), author.getAuthor_id());
     }
 
 //    @PostMapping("/addBookAndAuthor")
