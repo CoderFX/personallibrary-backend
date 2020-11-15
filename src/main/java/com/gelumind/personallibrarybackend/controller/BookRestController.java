@@ -17,28 +17,28 @@ public class BookRestController extends ApiRestController {
     BookService bookService;
 
     // Get all books
-    @GetMapping(value = "/book/all", produces = "application/json")
+    @GetMapping("/book/all")
     public List<Book> getAll() {
         return bookService.getAllBooks();
     }
 
     // Get book by ID
-    @GetMapping(value = "/book/{id}", produces = "application/json")
+    @GetMapping("/book/{id}")
     public @ResponseBody
     Optional<Book> getBookById(@PathVariable Long id) {
         return bookService.getById(id);
     }
 
     // Get book by title
-    @GetMapping(value = "/book/title?{title}", produces = "application/json")
+    @GetMapping("/book/title?{title}")
     public List<Book> getBookByTitle(@PathVariable String title) {
         return bookService.getByTitle(title.replace('+', ' '));
     }
 
     // Add book
-    @PostMapping(value = "/book", consumes = "application/json", produces = "application/json")
-    public HttpStatus addBook(@RequestBody Book book) {
-        return bookService.addBook(book) ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
+    @PostMapping("/book/add")
+    public void addBook(@RequestBody Book book) {
+        bookService.addBook(book);
     }
 
 //    @PostMapping("/addBookAndAuthor")
@@ -56,13 +56,13 @@ public class BookRestController extends ApiRestController {
 //    }
 
     // Update book
-    @PutMapping(value = "/book", consumes = "application/json", produces = "application/json")
+    @PutMapping("/book")
     public HttpStatus updateBook(@RequestBody Book book) {
         return bookService.updateBook(book) ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
     }
 
     // Delete book
-    @DeleteMapping(value = "/book/{id}", produces = "application/json")
+    @DeleteMapping("/book/{id}")
     public HttpStatus deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return HttpStatus.NO_CONTENT;
@@ -71,9 +71,9 @@ public class BookRestController extends ApiRestController {
     // Add author to book
     // Since book can have many authors we need this to add multiple authors
     // when adding a new book. Vice versa is not recommended
-    @PutMapping(value = "/book/{bookId}/author/{authorId}", produces = "application/json")
-    public HttpStatus addAuthor(@PathVariable Long bookId, @PathVariable Long authorId) {
-        return bookService.addAuthor(bookId, authorId) ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+    @PutMapping("/book/{bookId}/author/{authorId}")
+    public void addAuthor(@PathVariable Long bookId, @PathVariable Long authorId) {
+        bookService.addAuthor(bookId, authorId);
     }
 
 //    @GetMapping(path="/books", produces = "application/json")

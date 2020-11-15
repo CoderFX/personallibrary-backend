@@ -1,60 +1,46 @@
 package com.gelumind.personallibrarybackend.service;
 
-import com.gelumind.personallibrarybackend.repository.AuthorRepository;
 import com.gelumind.personallibrarybackend.model.Author;
+import com.gelumind.personallibrarybackend.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
-
     @Autowired
     private final AuthorRepository authorRepository;
 
-    private final List<Author> authors = new ArrayList<>();
-
-    @Transactional
-    public boolean addAuthor(Author author) {
-        return authorRepository.save(author) != null ;
+    public void addAuthor(Author author) {
+        authorRepository.save(author);
     }
 
-    @Transactional
     public Optional<Author> getById(Long id) {
         return authorRepository.findById(id) ;
     }
 
-    @Transactional
-    public List<Author> getAllAuthors() {
-        return (List<Author>) authorRepository.findAll();
+    public Set<Author> getAllAuthors() {
+        return authorRepository.findAll();
     }
 
-    @Transactional
-    public List<Author> getByFirstName(String firstName) {
-        List<Author> authors = new ArrayList<Author>() ;
+    public Set<Author> getByFirstName(String firstName) {
+        Set<Author> authors;
         authors = authorRepository.findByFirstNameContaining(firstName) ;
         return authors;
     }
 
-    @Transactional
-    public List<Author> getByLastName(String lastName) {
-        List<Author> authors = new ArrayList<Author>() ;
-        authors = authorRepository.findByLastNameContaining(lastName) ;
-        return authors;
+    public Set<Author> getByLastName(String lastName) {
+        return authorRepository.findByLastNameContaining(lastName);
     }
 
-    @Transactional
-    public boolean updateAuthor(Author author) {
-        return authorRepository.save(author) != null;
+    public void updateAuthor(Author author) {
+        authorRepository.save(author);
     }
 
-    @Transactional
     public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
     }
