@@ -40,7 +40,6 @@ public class Author implements Serializable {
 
     public Author() {}
 
-
     public Author(@NotEmpty String firstName, @NotEmpty String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;

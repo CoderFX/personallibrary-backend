@@ -1,10 +1,7 @@
 package com.gelumind.personallibrarybackend.model;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
-
-import javax.validation.constraints.NotEmpty;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

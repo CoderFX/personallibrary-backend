@@ -32,14 +32,14 @@ public class AuthorRestController extends ApiRestController {
 
     // Get author by first name
     // {{url}}/api/author?firstName=VALUE
-    @GetMapping(value = "/authors/firstName/{firstName}")
+    @GetMapping(value = "/author/firstName/{firstName}")
     public @ResponseBody
     List<Author> getAuthorByFirstName(@PathVariable String firstName) {
         return authorService.getByFirstName(firstName.replace('+', ' ')) ;
     }
 
     // Get author by last name
-    @GetMapping(value = "/authors/lastName/{lastName}", produces = "application/json")
+    @GetMapping(value = "/author/lastName/{lastName}", produces = "application/json")
     public @ResponseBody
     List<Author> getAuthorByLastName(@PathVariable String lastName) {
         return authorService.getByLastName(lastName.replace('+', ' ')) ;
@@ -59,7 +59,7 @@ public class AuthorRestController extends ApiRestController {
 
     // Delete Author by ID
     @DeleteMapping(value = "/author/{id}", produces = "application/json")
-    public HttpStatus deleteAuthor(@PathVariable Long id) {
+    public HttpStatus deleteAuthor(@PathVariable("id") Long id) {
         authorService.deleteAuthor(id);
         return HttpStatus.NO_CONTENT; //TODO if entry does not exist - application crashes - fix it
     }
