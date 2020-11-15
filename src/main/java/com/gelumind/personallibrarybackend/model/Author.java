@@ -1,14 +1,11 @@
 package com.gelumind.personallibrarybackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.nashorn.internal.objects.annotations.Constructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Component
@@ -19,44 +16,48 @@ public class Author implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "author_id")
-    private Long id;
+    private Long author_id;
 
-    @Column(name = "firstName", nullable = false)
-    @NotEmpty
+    @Column(name = "firstName")
     private String firstName;
 
-    @Column(name = "lastName", nullable = false)
-    @NotEmpty
+    @Column(name = "lastName")
     private String lastName;
 
+//    @JsonIgnore
+//    @ManyToMany
+//    @JoinTable(
+//            name="book_authors",
+//            joinColumns = @JoinColumn(name="author_id", referencedColumnName = "author_id"),
+//            inverseJoinColumns = @JoinColumn(name="book_id", referencedColumnName = "book_id")
+//    )
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name="book_authors",
-            joinColumns = @JoinColumn(name="author_id", referencedColumnName = "author_id"),
-            inverseJoinColumns = @JoinColumn(name="book_id", referencedColumnName = "book_id")
-    )
-    private List<Book> books = new ArrayList<Book>();
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    Set<Book> books;
 
     public Author() {}
 
-    public Author(@NotEmpty String firstName, @NotEmpty String lastName) {
+    public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public Author(@NotEmpty String firstName, @NotEmpty String lastName, List<Book> books) {
+    public Author(String firstName, String lastName, Set<Book> books) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.books = books;
     }
 
-    public Long getId() {
-        return id;
+    public Long getAuthor_id() {
+        return author_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAuthor_id(Long id) {
+        this.author_id = id;
     }
 
     public String getFirstName() {
@@ -75,7 +76,7 @@ public class Author implements Serializable {
         this.lastName = lastName;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return this.books;
     }
 
@@ -91,7 +92,7 @@ public class Author implements Serializable {
     @Override
     public String toString() {
         return "Author{" +
-                "id=" + id +
+                "id=" + author_id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", books=" + books +

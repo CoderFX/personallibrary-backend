@@ -1,14 +1,15 @@
 package com.gelumind.personallibrarybackend.controller;
 
+import com.gelumind.personallibrarybackend.exception.BookNotFoundException;
+import com.gelumind.personallibrarybackend.model.Author;
 import com.gelumind.personallibrarybackend.model.Book;
 import com.gelumind.personallibrarybackend.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,28 +18,34 @@ public class BookRestController extends ApiRestController {
     BookService bookService;
 
     // Get all books
-    @GetMapping(value = "/book/all", produces = "application/json")
-    public List<Book> getAll() {
+    @GetMapping("/book/all")
+    public Set<Book> getAll() {
         return bookService.getAllBooks();
     }
 
     // Get book by ID
-    @GetMapping(value = "/book/{id}", produces = "application/json")
+    @GetMapping("/book/{id}")
     public @ResponseBody
-    Optional<Book> getBookById(@PathVariable Long id) {
+    Optional<Book> getBookById(@PathVariable Long id) throws BookNotFoundException {
+        Book book = bookService.getById(id)
+                .orElseThrow(
+                        () ->
+                                new BookNotFoundException(String.format("Book with id %s not found", id))
+                );
         return bookService.getById(id);
     }
 
     // Get book by title
-    @GetMapping(value = "/book/title?{title}", produces = "application/json")
-    public List<Book> getBookByTitle(@PathVariable String title) {
+    @GetMapping("/book/title?{title}")
+    public Set<Book> getBookByTitle(@PathVariable String title) {
         return bookService.getByTitle(title.replace('+', ' '));
     }
 
     // Add book
-    @PostMapping(value = "/book", consumes = "application/json", produces = "application/json")
-    public HttpStatus addBook(@RequestBody Book book) {
-        return bookService.addBook(book) ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
+    @PostMapping("/book/add")
+    public void addBook(@RequestBody Book book, Author author) {
+        bookService.addBook(book);
+        bookService.addAuthor(book.getBook_id(), author.getAuthor_id());
     }
 
 //    @PostMapping("/addBookAndAuthor")
@@ -56,24 +63,23 @@ public class BookRestController extends ApiRestController {
 //    }
 
     // Update book
-    @PutMapping(value = "/book", consumes = "application/json", produces = "application/json")
-    public HttpStatus updateBook(@RequestBody Book book) {
-        return bookService.updateBook(book) ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+    @PutMapping("/book/update")
+    public void updateBook(@RequestBody Book book) throws BookNotFoundException {
+        bookService.updateBook(book);
     }
 
     // Delete book
-    @DeleteMapping(value = "/book/{id}", produces = "application/json")
-    public HttpStatus deleteBook(@PathVariable Long id) {
+    @DeleteMapping("/book/delete/{id}")
+    public void deleteBook(@PathVariable Long id) throws BookNotFoundException {
         bookService.deleteBook(id);
-        return HttpStatus.NO_CONTENT;
     }
 
     // Add author to book
     // Since book can have many authors we need this to add multiple authors
     // when adding a new book. Vice versa is not recommended
-    @PutMapping(value = "/book/{bookId}/author/{authorId}", produces = "application/json")
-    public HttpStatus addAuthor(@PathVariable Long bookId, @PathVariable Long authorId) {
-        return bookService.addAuthor(bookId, authorId) ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+    @PutMapping("/book/{bookId}/author/{authorId}")
+    public void addAuthor(@PathVariable Long bookId, @PathVariable Long authorId) {
+        bookService.addAuthor(bookId, authorId);
     }
 
 //    @GetMapping(path="/books", produces = "application/json")

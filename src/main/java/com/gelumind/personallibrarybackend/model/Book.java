@@ -1,10 +1,10 @@
 package com.gelumind.personallibrarybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -14,39 +14,39 @@ public class Book implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
-    private Long id;
+    private Long book_id;
 
-    @Column(name = "title", nullable = false)
-    @NotEmpty
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "year", nullable = false)
-    @NotEmpty
+    @Column(name = "year")
     private int year;
 
-    @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Author> authors = new ArrayList<Author>();
+//    @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonBackReference
+    @ManyToMany(mappedBy = "books")
+    Set<Author> authors;
 
     public Book() {
     }
 
-    public Book(@NotEmpty String title, @NotEmpty int year) {
+    public Book(String title, int year) {
         this.title = title;
         this.year = year;
     }
 
-    public Book(@NotEmpty String title, @NotEmpty int year, List<Author> authors) {
+    public Book(String title, int year, Set<Author> authors) {
         this.title = title;
         this.year = year;
         this.authors = authors;
     }
 
-    public Long getId() {
-        return id;
+    public Long getBook_id() {
+        return book_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBook_id(Long id) {
+        this.book_id = id;
     }
 
     public String getTitle() {
@@ -65,26 +65,18 @@ public class Book implements Serializable {
         this.year = year;
     }
 
-
-
-    public List<Author> getAuthors() {
+    public Set<Author> getAuthors() {
         return this.authors;
     }
 
-    // Working
-    public void setAuthors(Author author) {
-        this.authors.add(author) ;
-    }
-
-    // Also works?
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
+                "id=" + book_id +
                 ", title='" + title + '\'' +
                 ", year=" + year +
                 ", authors=" + authors +

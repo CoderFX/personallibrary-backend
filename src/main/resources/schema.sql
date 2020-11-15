@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS book_authors CASCADE;
 
 CREATE TABLE authors
 (
-    author_id integer not null,
+    author_id integer primary key auto_increment,
         first_name varchar(255),
         last_name varchar(255),
         primary key (author_id)
@@ -12,7 +12,7 @@ CREATE TABLE authors
 
 CREATE TABLE books
 (
-    book_id integer not null,
+    book_id integer primary key auto_increment,
         title varchar(255),
         year integer,
         primary key (book_id)
