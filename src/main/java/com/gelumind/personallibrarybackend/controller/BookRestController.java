@@ -1,14 +1,15 @@
 package com.gelumind.personallibrarybackend.controller;
 
+import com.gelumind.personallibrarybackend.exception.BookNotFoundException;
+import com.gelumind.personallibrarybackend.model.Author;
 import com.gelumind.personallibrarybackend.model.Book;
 import com.gelumind.personallibrarybackend.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,27 +19,33 @@ public class BookRestController extends ApiRestController {
 
     // Get all books
     @GetMapping("/book/all")
-    public List<Book> getAll() {
+    public Set<Book> getAll() {
         return bookService.getAllBooks();
     }
 
     // Get book by ID
     @GetMapping("/book/{id}")
     public @ResponseBody
-    Optional<Book> getBookById(@PathVariable Long id) {
+    Optional<Book> getBookById(@PathVariable Long id) throws BookNotFoundException {
+        Book book = bookService.getById(id)
+                .orElseThrow(
+                        () ->
+                                new BookNotFoundException(String.format("Book with id %s not found", id))
+                );
         return bookService.getById(id);
     }
 
     // Get book by title
     @GetMapping("/book/title?{title}")
-    public List<Book> getBookByTitle(@PathVariable String title) {
+    public Set<Book> getBookByTitle(@PathVariable String title) {
         return bookService.getByTitle(title.replace('+', ' '));
     }
 
     // Add book
     @PostMapping("/book/add")
-    public void addBook(@RequestBody Book book) {
+    public void addBook(@RequestBody Book book, Author author) {
         bookService.addBook(book);
+        bookService.addAuthor(book.getBook_id(), author.getAuthor_id());
     }
 
 //    @PostMapping("/addBookAndAuthor")
@@ -56,16 +63,15 @@ public class BookRestController extends ApiRestController {
 //    }
 
     // Update book
-    @PutMapping("/book")
-    public HttpStatus updateBook(@RequestBody Book book) {
-        return bookService.updateBook(book) ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+    @PutMapping("/book/update")
+    public void updateBook(@RequestBody Book book) throws BookNotFoundException {
+        bookService.updateBook(book);
     }
 
     // Delete book
-    @DeleteMapping("/book/{id}")
-    public HttpStatus deleteBook(@PathVariable Long id) {
+    @DeleteMapping("/book/delete/{id}")
+    public void deleteBook(@PathVariable Long id) throws BookNotFoundException {
         bookService.deleteBook(id);
-        return HttpStatus.NO_CONTENT;
     }
 
     // Add author to book

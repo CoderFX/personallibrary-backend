@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class BookService {
     @Autowired
     AuthorRepository authorRepository ;
 
-    public List<Book> getAllBooks() {
+    public Set<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
@@ -28,7 +28,7 @@ public class BookService {
         return bookRepository.findById(id) ;
     }
 
-    public List<Book> getByTitle(String title) {
+    public Set<Book> getByTitle(String title) {
         return bookRepository.findByTitleContaining(title);
     }
 

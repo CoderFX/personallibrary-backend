@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,19 +45,19 @@ public class AuthorRestController extends ApiRestController {
     }
 
     // Add author
-    @PostMapping("/author")
+    @PostMapping("/author/add")
     public void addAuthor(@RequestBody Author author) {
         authorService.addAuthor(author);
     }
 
     // Update author
-    @PutMapping("/author")
+    @PutMapping("/author/update")
     public void updateAuthor(@RequestBody Author author) {
         authorService.updateAuthor(author);
     }
 
     // Delete Author by ID
-    @DeleteMapping("/author/{id}")
+    @DeleteMapping("/author/delete/{id}")
     public void deleteAuthor(@PathVariable("id") Long id) {
         authorService.deleteAuthor(id);
     }
