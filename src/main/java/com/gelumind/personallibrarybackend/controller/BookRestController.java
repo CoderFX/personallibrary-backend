@@ -1,11 +1,11 @@
 package com.gelumind.personallibrarybackend.controller;
 
 import com.gelumind.personallibrarybackend.exception.BookNotFoundException;
-import com.gelumind.personallibrarybackend.model.Author;
 import com.gelumind.personallibrarybackend.model.Book;
 import com.gelumind.personallibrarybackend.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -48,6 +48,7 @@ public class BookRestController extends ApiRestController {
 //        bookService.addAuthor(book.getBook_id(), author.getAuthor_id());
     }
 
+    //TODO try to add book and author together
 //    @PostMapping("/addBookAndAuthor")
 //    public void addBookAndAuthor(@RequestBody RequestObject formosDuomenys) {
 //        List<Author> authorList = formosDuomenys.getAuthorList();
@@ -63,20 +64,23 @@ public class BookRestController extends ApiRestController {
 //    }
 
     // Update book
-    @PutMapping("/book/update")
-    public void updateBook(@RequestBody Book book) throws BookNotFoundException {
+    @CrossOrigin(origins = "http://localhost:4200") // fix for CORS policy error
+    @PutMapping("/book/{book_id}/edit")
+    public void updateBook(@PathVariable("book_id") Long book_id, @RequestBody Book book) throws BookNotFoundException {
         bookService.updateBook(book);
     }
 
     // Delete book
-    @DeleteMapping("/book/delete/{id}")
-    public void deleteBook(@PathVariable Long id) throws BookNotFoundException {
-        bookService.deleteBook(id);
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/book/{book_id}/delete")
+    public void deleteBook(@PathVariable Long book_id) throws BookNotFoundException {
+        bookService.deleteBook(book_id);
     }
 
     // Add author to book
     // Since book can have many authors we need this to add multiple authors
     // when adding a new book. Vice versa is not recommended
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/book/{bookId}/author/{authorId}")
     public void addAuthor(@PathVariable Long bookId, @PathVariable Long authorId) {
         bookService.addAuthor(bookId, authorId);
