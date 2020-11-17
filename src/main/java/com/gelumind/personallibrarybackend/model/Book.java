@@ -23,8 +23,8 @@ public class Book implements Serializable {
     private int year;
 
 //    @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JsonBackReference
-    @ManyToMany(mappedBy = "books")
+//    @JsonBackReference <- add this and books will not be linked to authors!
+    @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Author> authors;
 
     public Book() {

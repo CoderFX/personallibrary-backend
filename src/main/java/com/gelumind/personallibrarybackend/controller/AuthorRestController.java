@@ -23,10 +23,10 @@ public class AuthorRestController extends ApiRestController {
 
     // Get author by ID
     // {{url}}/api/author?id=VALUE
-    @GetMapping("/author/{id}")
+    @GetMapping("/author/{author_id}")
     public @ResponseBody
-    Optional<Author> getAuthorById(@PathVariable("id") Long id) {
-        return authorService.getById(id);
+    Optional<Author> getAuthorById(@PathVariable("author_id") Long author_id) {
+        return authorService.getById(author_id);
     }
 
     // Get author by first name
@@ -51,14 +51,15 @@ public class AuthorRestController extends ApiRestController {
     }
 
     // Update author
-    @PutMapping("/author/update")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/author/{author_id}update")
     public void updateAuthor(@RequestBody Author author) {
         authorService.updateAuthor(author);
     }
 
     // Delete Author by ID
-    @DeleteMapping("/author/delete/{id}")
-    public void deleteAuthor(@PathVariable("id") Long id) {
-        authorService.deleteAuthor(id);
+    @DeleteMapping("/author/{author_id}/delete")
+    public void deleteAuthor(@PathVariable("author_id") Long author_id) {
+        authorService.deleteAuthor(author_id);
     }
 }
