@@ -52,12 +52,13 @@ public class AuthorRestController extends ApiRestController {
 
     // Update author
     @CrossOrigin(origins = "http://localhost:4200")
-    @PutMapping("/author/{author_id}update")
+    @PutMapping("/author/{author_id}/edit")
     public void updateAuthor(@RequestBody Author author) {
         authorService.updateAuthor(author);
     }
 
     // Delete Author by ID
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/author/{author_id}/delete")
     public void deleteAuthor(@PathVariable("author_id") Long author_id) {
         authorService.deleteAuthor(author_id);
