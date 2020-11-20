@@ -70,6 +70,8 @@ public class BookRestController extends ApiRestController {
         bookService.updateBook(book);
     }
 
+    //TODO if you wish to remove a book, you must first delete all its authors. Is that OK?
+
     // Delete book
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/book/{book_id}/delete")

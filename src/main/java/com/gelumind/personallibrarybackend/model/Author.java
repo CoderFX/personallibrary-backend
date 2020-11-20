@@ -1,6 +1,8 @@
 package com.gelumind.personallibrarybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -32,12 +34,12 @@ public class Author implements Serializable {
 //            inverseJoinColumns = @JoinColumn(name="book_id", referencedColumnName = "book_id")
 //    )
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_authors",
             joinColumns = @JoinColumn(name = "author_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
-    Set<Book> books;
+    private Set<Book> books;
 
     public Author() {}
 

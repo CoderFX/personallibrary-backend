@@ -1,6 +1,7 @@
 package com.gelumind.personallibrarybackend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,8 +25,8 @@ public class Book implements Serializable {
 
 //    @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JsonBackReference <- add this and books will not be linked to authors!
-    @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<Author> authors;
+    @ManyToMany(mappedBy = "books")
+    private Set<Author> authors;
 
     public Book() {
     }
